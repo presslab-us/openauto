@@ -565,6 +565,7 @@ void SettingsWindow::loadButtonCheckBoxes()
     ui_->checkBoxScrollWheelButton->setChecked(std::find(buttonCodes.begin(), buttonCodes.end(), aasdk::proto::enums::ButtonCode::SCROLL_WHEEL) != buttonCodes.end());
     ui_->checkBoxBackButton->setChecked(std::find(buttonCodes.begin(), buttonCodes.end(), aasdk::proto::enums::ButtonCode::BACK) != buttonCodes.end());
     ui_->checkBoxEnterButton->setChecked(std::find(buttonCodes.begin(), buttonCodes.end(), aasdk::proto::enums::ButtonCode::ENTER) != buttonCodes.end());
+    ui_->checkBoxNavButton->setChecked(std::find(buttonCodes.begin(), buttonCodes.end(), aasdk::proto::enums::ButtonCode::NAVIGATION) != buttonCodes.end());
 }
 
 void SettingsWindow::setButtonCheckBoxes(bool value)
@@ -585,6 +586,7 @@ void SettingsWindow::setButtonCheckBoxes(bool value)
     ui_->checkBoxScrollWheelButton->setChecked(value);
     ui_->checkBoxBackButton->setChecked(value);
     ui_->checkBoxEnterButton->setChecked(value);
+    ui_->checkBoxNavButton->setChecked(value);
 }
 
 void SettingsWindow::saveButtonCheckBoxes()
@@ -606,6 +608,7 @@ void SettingsWindow::saveButtonCheckBoxes()
     this->saveButtonCheckBox(ui_->checkBoxScrollWheelButton, buttonCodes, aasdk::proto::enums::ButtonCode::SCROLL_WHEEL);
     this->saveButtonCheckBox(ui_->checkBoxBackButton, buttonCodes, aasdk::proto::enums::ButtonCode::BACK);
     this->saveButtonCheckBox(ui_->checkBoxEnterButton, buttonCodes, aasdk::proto::enums::ButtonCode::ENTER);
+    this->saveButtonCheckBox(ui_->checkBoxNavButton, buttonCodes, aasdk::proto::enums::ButtonCode::NAVIGATION);
     configuration_->setButtonCodes(buttonCodes);
 }
 
