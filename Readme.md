@@ -45,6 +45,7 @@ Copyrights (c) 2018 f1x.studio (Michal Szwaj)
  - [Qt libraries](https://www.qt.io/)
  - [CMake](https://cmake.org/)
  - [RtAudio](https://www.music.mcgill.ca/~gary/rtaudio/playback.html)
+ - [libgps](https://gpsd.gitlab.io/gpsd/libgps.html)
  - Broadcom ilclient from RaspberryPI 3 firmware
  - OpenMAX IL API
 
