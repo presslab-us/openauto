@@ -237,7 +237,7 @@ void SensorService::sensorPolling()
                 this->sendGPSLocationData();
             }
 
-            timer_.expires_from_now(boost::posix_time::seconds(1));
+            timer_.expires_from_now(boost::posix_time::milliseconds(250));
             timer_.async_wait(strand_.wrap(std::bind(&SensorService::sensorPolling, this->shared_from_this())));
         });
     }
