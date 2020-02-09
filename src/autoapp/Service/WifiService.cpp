@@ -58,7 +58,7 @@ void WifiService::fillFeatures(aasdk::proto::messages::ServiceDiscoveryResponse&
     channelDescriptor->set_channel_id(14);
 
     auto* channel = channelDescriptor->mutable_wifi_channel();
-    channel->set_ssid("ChiPri");
+    channel->set_ssid("CRANKSHAFT-NG");
 }
 
 }

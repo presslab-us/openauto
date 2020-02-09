@@ -57,7 +57,7 @@ namespace f1x {
 //                            QOverload<>::of(&ChatServer::clientDisconnected));
 
                     f1x::aasdk::proto::messages::WifiInfoRequest request;
-                    request.set_ip_address("192.168.1.123");
+                    request.set_ip_address("192.168.254.1");
                     request.set_port(5000);
 
                     sendMessage(request, 1);
@@ -121,7 +121,7 @@ namespace f1x {
                 OPENAUTO_LOG(info) << "WifiInfoRequest: " << msg.DebugString();
 
                 f1x::aasdk::proto::messages::WifiInfoResponse response;
-                response.set_ip_address("192.168.1.123");
+                response.set_ip_address("192.168.254.1");
                 response.set_port(5000);
                 response.set_status(aasdk::proto::messages::WifiInfoResponse_Status_STATUS_SUCCESS);
 
@@ -131,9 +131,9 @@ namespace f1x {
             void AndroidBluetoothServer::handleWifiSecurityRequest(QByteArray &buffer, uint16_t length) {
                 f1x::aasdk::proto::messages::WifiSecurityReponse response;
 
-                response.set_ssid("ChiPri");
-                response.set_bssid("E4:F4:C6:07:DF:F0");
-                response.set_key("chilliepillie8788");
+                response.set_ssid("CRANKSHAFT-NG");
+                response.set_bssid("B8:27:EB:8D:A1:3D");
+                response.set_key("1234567890");
                 response.set_security_mode(aasdk::proto::messages::WifiSecurityReponse_SecurityMode_WPA2_PERSONAL);
                 response.set_access_point_type(aasdk::proto::messages::WifiSecurityReponse_AccessPointType_STATIC);
 
