@@ -16,7 +16,7 @@
 *  along with openauto. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QtBluetooth>
 #include <f1x/openauto/Common/Log.hpp>
 #include <f1x/openauto/btservice/AndroidBluetoothService.hpp>
@@ -26,7 +26,7 @@ namespace btservice = f1x::openauto::btservice;
 
 int main(int argc, char *argv[]) {
     QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth*=true"));
-    QApplication qApplication(argc, argv);
+    QCoreApplication qApplication(argc, argv);
 
     QBluetoothLocalDevice localDevice;
     const QBluetoothAddress address = localDevice.address();
