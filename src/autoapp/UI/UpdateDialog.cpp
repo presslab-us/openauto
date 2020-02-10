@@ -39,7 +39,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
 
     watcher_tmp = new QFileSystemWatcher(this);
     watcher_tmp->addPath("/tmp");
-    connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &UpdateDialog::updateCheck);
+    //connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &UpdateDialog::updateCheck);
 
     watcher_download = new QFileSystemWatcher(this);
     watcher_download->addPath("/media/USBDRIVES/CSSTORAGE");

@@ -552,7 +552,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     watcher_tmp = new QFileSystemWatcher(this);
     watcher_tmp->addPath("/tmp");
-    connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &MainWindow::tmpChanged);
+    //connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &MainWindow::tmpChanged);
 
     // Experimental test code
     localDevice = new QBluetoothLocalDevice(this);

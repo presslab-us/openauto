@@ -158,7 +158,8 @@ namespace f1x {
                 for (auto &&val : out) {
                     ss << std::setw(2) << static_cast<unsigned>(val);
                 }
-                OPENAUTO_LOG(info) << "Writing message: " << ss.str();
+                //OPENAUTO_LOG(info) << "Writing message: " << ss.str();
+                OPENAUTO_LOG(debug) << message.GetTypeName() << " - " + message.DebugString();
 
                 auto written = socket->write(out);
                 if (written > -1) {
