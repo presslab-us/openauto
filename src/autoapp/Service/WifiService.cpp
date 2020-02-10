@@ -19,6 +19,7 @@
 #include <f1x/openauto/Common/Log.hpp>
 #include <f1x/openauto/autoapp/Service/WifiService.hpp>
 #include <fstream>
+#include <QString>
 
 namespace f1x
 {
@@ -29,7 +30,8 @@ namespace autoapp
 namespace service
 {
 
-WifiService::WifiService()
+WifiService::WifiService(configuration::IConfiguration::Pointer configuration)
+    : configuration_(std::move(configuration))
 {
 
 }
@@ -58,7 +60,7 @@ void WifiService::fillFeatures(aasdk::proto::messages::ServiceDiscoveryResponse&
     channelDescriptor->set_channel_id(14);
 
     auto* channel = channelDescriptor->mutable_wifi_channel();
-    channel->set_ssid("CRANKSHAFT-NG");
+    channel->set_ssid(configuration_->getParamFromFile("/etc/hostapd/hostapd.conf","ssid").toStdString());
 }
 
 }

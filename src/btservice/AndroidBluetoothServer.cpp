@@ -18,8 +18,11 @@
 
 #include <boost/algorithm/hex.hpp>
 #include <f1x/openauto/Common/Log.hpp>
+#include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 #include <f1x/openauto/btservice/AndroidBluetoothServer.hpp>
+#include <QString>
 #include <QtCore/QDataStream>
+#include <QNetworkInterface>
 #include <aasdk_proto/WifiInfoRequestMessage.pb.h>
 #include <aasdk_proto/WifiInfoResponseMessage.pb.h>
 #include <aasdk_proto/WifiSecurityResponseMessage.pb.h>
@@ -28,8 +31,10 @@ namespace f1x {
     namespace openauto {
         namespace btservice {
 
-            AndroidBluetoothServer::AndroidBluetoothServer()
-                    : rfcommServer_(std::make_unique<QBluetoothServer>(QBluetoothServiceInfo::RfcommProtocol, this)) {
+            AndroidBluetoothServer::AndroidBluetoothServer(autoapp::configuration::IConfiguration::Pointer configuration)
+                    : rfcommServer_(std::make_unique<QBluetoothServer>(QBluetoothServiceInfo::RfcommProtocol, this))
+                    , configuration_(std::move(configuration))
+            {
                 connect(rfcommServer_.get(), &QBluetoothServer::newConnection, this,
                         &AndroidBluetoothServer::onClientConnected);
             }
@@ -57,7 +62,7 @@ namespace f1x {
 //                            QOverload<>::of(&ChatServer::clientDisconnected));
 
                     f1x::aasdk::proto::messages::WifiInfoRequest request;
-                    request.set_ip_address("192.168.254.1");
+                    request.set_ip_address(getIP4_("wlan0"));
                     request.set_port(5000);
 
                     sendMessage(request, 1);
@@ -121,7 +126,7 @@ namespace f1x {
                 OPENAUTO_LOG(info) << "WifiInfoRequest: " << msg.DebugString();
 
                 f1x::aasdk::proto::messages::WifiInfoResponse response;
-                response.set_ip_address("192.168.254.1");
+                response.set_ip_address(getIP4_("wlan0"));
                 response.set_port(5000);
                 response.set_status(aasdk::proto::messages::WifiInfoResponse_Status_STATUS_SUCCESS);
 
@@ -131,9 +136,9 @@ namespace f1x {
             void AndroidBluetoothServer::handleWifiSecurityRequest(QByteArray &buffer, uint16_t length) {
                 f1x::aasdk::proto::messages::WifiSecurityReponse response;
 
-                response.set_ssid("CRANKSHAFT-NG");
-                response.set_bssid("B8:27:EB:8D:A1:3D");
-                response.set_key("1234567890");
+                response.set_ssid(configuration_->getParamFromFile("/etc/hostapd/hostapd.conf","ssid").toStdString());
+                response.set_bssid(QNetworkInterface::interfaceFromName("wlan0").hardwareAddress().toStdString());
+                response.set_key(configuration_->getParamFromFile("/etc/hostapd/hostapd.conf","wpa_passphrase").toStdString());
                 response.set_security_mode(aasdk::proto::messages::WifiSecurityReponse_SecurityMode_WPA2_PERSONAL);
                 response.set_access_point_type(aasdk::proto::messages::WifiSecurityReponse_AccessPointType_STATIC);
 
@@ -167,6 +172,14 @@ namespace f1x {
                 f1x::aasdk::proto::messages::WifiInfoResponse msg;
                 msg.ParseFromArray(buffer.data() + 4, length);
                 OPENAUTO_LOG(info) << "WifiInfoResponse: " << msg.DebugString();
+            }
+
+            const ::std::string AndroidBluetoothServer::getIP4_(const QString intf) {
+                for (const QNetworkAddressEntry &address: QNetworkInterface::interfaceFromName(intf).addressEntries()) {
+                    if (address.ip().protocol() == QAbstractSocket::IPv4Protocol)
+                        return address.ip().toString().toStdString();
+                }
+                return "";
             }
         }
     }

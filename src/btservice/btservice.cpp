@@ -19,6 +19,7 @@
 #include <QCoreApplication>
 #include <QtBluetooth>
 #include <f1x/openauto/Common/Log.hpp>
+#include <f1x/openauto/autoapp/Configuration/Configuration.hpp>
 #include <f1x/openauto/btservice/AndroidBluetoothService.hpp>
 #include <f1x/openauto/btservice/AndroidBluetoothServer.hpp>
 
@@ -31,12 +32,14 @@ int main(int argc, char *argv[]) {
     QBluetoothLocalDevice localDevice;
     const QBluetoothAddress address = localDevice.address();
 
+    auto configuration = std::make_shared<f1x::openauto::autoapp::configuration::Configuration>();
+
     // Turn Bluetooth on
     localDevice.powerOn();
     // Make it visible to others
     localDevice.setHostMode(QBluetoothLocalDevice::HostDiscoverable);
 
-    btservice::AndroidBluetoothServer androidBluetoothServer;
+    btservice::AndroidBluetoothServer androidBluetoothServer(configuration);
     uint16_t portNumber = androidBluetoothServer.start(address);
 
     if (portNumber == 0) {
@@ -55,7 +58,7 @@ int main(int argc, char *argv[]) {
         OPENAUTO_LOG(info) << "[btservice] Service registered, port: " << portNumber;
     }
 
-    QApplication::exec();
+    QCoreApplication::exec();
 
     OPENAUTO_LOG(info) << "stop";
     androidBluetoothService.unregisterService();

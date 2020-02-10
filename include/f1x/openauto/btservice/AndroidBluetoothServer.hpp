@@ -22,6 +22,7 @@
 #include <memory>
 #include <QBluetoothServer>
 #include <f1x/openauto/btservice/IAndroidBluetoothServer.hpp>
+#include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 #include <f1x/aasdk/Messenger/Message.hpp>
 
 namespace f1x
@@ -36,7 +37,7 @@ class AndroidBluetoothServer: public QObject, public IAndroidBluetoothServer
     Q_OBJECT
 
 public:
-    AndroidBluetoothServer();
+    AndroidBluetoothServer(autoapp::configuration::IConfiguration::Pointer configuration);
 
     uint16_t start(const QBluetoothAddress& address) override;
 
@@ -46,6 +47,7 @@ private slots:
 private:
     std::unique_ptr<QBluetoothServer> rfcommServer_;
     QBluetoothSocket* socket = nullptr;
+    autoapp::configuration::IConfiguration::Pointer configuration_;
 
     void readSocket();
 
@@ -58,6 +60,8 @@ private:
     void handleWifiSecurityRequest(QByteArray &buffer, uint16_t length);
 
     void handleWifiInfoRequestResponse(QByteArray &buffer, uint16_t length);
+
+    const ::std::string getIP4_(const QString intf);
 };
 
 }

@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 #include <f1x/openauto/autoapp/Service/IService.hpp>
 #include <boost/asio/io_service.hpp>
 #include <f1x/aasdk/Messenger/IMessenger.hpp>
@@ -36,7 +37,7 @@ class WifiService: public IService, public std::enable_shared_from_this<WifiServ
 public:
     typedef std::shared_ptr<WifiService> Pointer;
 
-    WifiService();
+    WifiService(configuration::IConfiguration::Pointer configuration);
 
     void start() override;
     void stop() override;
@@ -46,6 +47,7 @@ public:
 
 private:
     using std::enable_shared_from_this<WifiService>::shared_from_this;
+    configuration::IConfiguration::Pointer configuration_;
 };
 
 }
