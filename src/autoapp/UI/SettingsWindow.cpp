@@ -469,7 +469,7 @@ void SettingsWindow::onSave()
 void SettingsWindow::onResetToDefaults()
 {
     QMessageBox confirmationMessage(QMessageBox::Question, "Confirmation", "Are you sure you want to reset settings?", QMessageBox::Yes | QMessageBox::Cancel);
-    confirmationMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //confirmationMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
     if(confirmationMessage.exec() == QMessageBox::Yes)
     {
         configuration_->reset();
@@ -1362,7 +1362,7 @@ void f1x::openauto::autoapp::ui::SettingsWindow::updateNetworkInfo()
             ui_->lineEditWifiSSID->setText(configuration_->getParamFromFile("/etc/hostapd/hostapd.conf","ssid"));
             ui_->lineEditPassword->show();
             ui_->label_password->show();
-            ui_->lineEditPassword->setText("1234567890");
+            ui_->lineEditPassword->setText(configuration_->getParamFromFile("/etc/hostapd/hostapd.conf","wpa_passphrase"));
             ui_->clientNetworkSelect->hide();
             ui_->pushButtonNetworkAuto->hide();
             ui_->label_notavailable->show();
