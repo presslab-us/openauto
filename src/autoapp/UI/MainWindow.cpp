@@ -548,11 +548,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     watcher = new QFileSystemWatcher(this);
     watcher->addPath("/media/USBDRIVES");
-    connect(watcher, SIGNAL(directoryChanged), this, SLOT(setTrigger));
+    connect(watcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::setTrigger);
 
     watcher_tmp = new QFileSystemWatcher(this);
     watcher_tmp->addPath("/tmp");
-    connect(watcher_tmp, SIGNAL(directoryChanged), this, SLOT(tmpChanged));
+    connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &MainWindow::tmpChanged);
 
     // Experimental test code
     localDevice = new QBluetoothLocalDevice(this);
