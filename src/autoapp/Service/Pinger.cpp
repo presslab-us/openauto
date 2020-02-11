@@ -78,7 +78,7 @@ void Pinger::onTimerExceeded(const boost::system::error_code& error)
     {
         promise_->reject(aasdk::error::Error(aasdk::error::ErrorCode::OPERATION_ABORTED));
     }
-    else if(pingsCount_ - pongsCount_ > 4)
+    else if(pingsCount_ - pongsCount_ > 1)
     {
         promise_->reject(aasdk::error::Error());
     }
