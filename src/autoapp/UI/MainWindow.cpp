@@ -548,11 +548,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     watcher = new QFileSystemWatcher(this);
     watcher->addPath("/media/USBDRIVES");
-    connect(watcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::setTrigger);
+    connect(watcher, SIGNAL(directoryChanged), this, SLOT(setTrigger));
 
     watcher_tmp = new QFileSystemWatcher(this);
     watcher_tmp->addPath("/tmp");
-    //connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &MainWindow::tmpChanged);
+    connect(watcher_tmp, SIGNAL(directoryChanged), this, SLOT(tmpChanged));
 
     // Experimental test code
     localDevice = new QBluetoothLocalDevice(this);
@@ -1805,7 +1805,12 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             QFile deviceData(QString("/tmp/android_device"));
             deviceData.open(QIODevice::ReadOnly);
             QTextStream data_date(&deviceData);
-            QString linedate = data_date.readAll().split("\n")[1];
+            data_date.readLine();
+            // wait for second line to be written
+            QString linedate;
+            while (linedate.isNull()) {
+                linedate = data_date.readLine();
+            }
             deviceData.close();
             ui_->labelAndroidAutoBottom->setText(linedate.simplified().replace("_"," "));
         } catch (...) {
